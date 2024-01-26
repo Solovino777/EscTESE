@@ -1,3 +1,7 @@
+https://f931-189-229-188-50.ngrok-free.app
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -34,6 +38,27 @@
     /* Resto de estilos CSS ... */
 
   </style>
+</head>
+
+<body>
+  <div class="contenedor">
+    <img src="109.jpg" alt="Icono de huerto" class="icono-huerto">
+    <h1>Monitoreando tu Huerto</h1>
+
+    <p>La temperatura actual es: <span id="temperatura"></span></p>
+    <canvas id="graficaTemperatura" width="200" height="200"></canvas>
+
+    <p>La humedad actual es: <span id="humedad"></span></p>
+    <canvas id="graficaHumedad" width="200" height="200"></canvas>
+
+    <h2>Mis Plantas</h2>
+    <div class="base-datos" id="baseDatos">
+      <!-- Aquí se añadirán dinámicamente las plantas -->
+    </div>
+
+    <button class="agregar-planta-btn" onclick="agregarPlanta()">Agregar Planta</button>
+  </div>
+
   <script>
     const temperaturaData = {
       labels: ['Temperatura'],
@@ -72,7 +97,10 @@
       options: opcionesGraficas
     });
 
-    const socket = new WebSocket("wss://f931-189-229-188-50.ngrok-free.app");
+    const socket = new WebSocket("ws://localhost:3001");
+
+
+
 
     socket.onmessage = function (event) {
       const [temperaturaStr, humedadStr] = event.data.split("\n");
@@ -104,7 +132,30 @@
           luzTiempo: '6-8 horas diarias'
         }
       },
-      // Resto de las plantas ...
+      {
+        nombre: 'Rábanos',
+        imagen: 'rabanos.jpg',
+        info: {
+          nombre: 'Rábanos',
+          temperaturaMinima: '10°C',
+          temperaturaMaxima: '25°C',
+          tiempoMaduracion: '30 días',
+          nutricion: 'Buena fuente de fibra y minerales',
+          luzTiempo: '4-6 horas diarias'
+        }
+      },
+      {
+        nombre: 'Zanahorias',
+        imagen: 'zanahorias.jpg',
+        info: {
+          nombre: 'Zanahorias',
+          temperaturaMinima: '10°C',
+          temperaturaMaxima: '25°C',
+          tiempoMaduracion: '70 días',
+          nutricion: 'Rica en betacarotenos y antioxidantes',
+          luzTiempo: '6-8 horas diarias'
+        }
+      }
     ];
 
     function agregarPlanta() {
@@ -175,26 +226,6 @@
       graficaHumedad.update();
     }
   </script>
-</head>
-
-<body>
-  <div class="contenedor">
-    <img src="109.jpg" alt="Icono de huerto" class="icono-huerto">
-    <h1>Monitoreando tu Huerto</h1>
-
-    <p>La temperatura actual es: <span id="temperatura"></span></p>
-    <canvas id="graficaTemperatura" width="200" height="200"></canvas>
-
-    <p>La humedad actual es: <span id="humedad"></span></p>
-    <canvas id="graficaHumedad" width="200" height="200"></canvas>
-
-    <h2>Mis Plantas</h2>
-    <div class="base-datos" id="baseDatos">
-      <!-- Aquí se añadirán dinámicamente las plantas -->
-    </div>
-
-    <button class="agregar-planta-btn" onclick="agregarPlanta()">Agregar Planta</button>
-  </div>
 </body>
 
 </html>
